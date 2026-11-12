@@ -30,7 +30,7 @@ export const GET: APIRoute = async () => {
       h('div', {}, first),
       h('div', { color: '#c8ff4d', fontStyle: 'italic' }, rest.join(' ')),
     ]),
-    h('div', { marginTop: 34, fontSize: 30, color: '#eeeef6', lineHeight: 1.3 }, 'I build scalable backend systems and full-stack applications.'),
+    h('div', { marginTop: 34, fontSize: 30, color: '#eeeef6', lineHeight: 1.3 }, 'Java Full Stack Developer · Spring Boot · Microservices · React'),
   ]);
   const portrait = h(
     'div',

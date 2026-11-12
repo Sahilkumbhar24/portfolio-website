@@ -1,15 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import photo from '../assets/sahil.jpg';
-import { person, hero, projects } from '../data/profile';
+import { person, hero, toolkit } from '../data/profile';
 
 const [first, ...rest] = person.name.split(' ');
 const last = rest.join(' ');
-
-// Top skills from projects
-const counts = new Map<string, number>();
-for (const tool of projects.flatMap((p) => p.stack)) counts.set(tool, (counts.get(tool) ?? 0) + 1);
-const toolkit = [...counts].sort((a, b) => b[1] - a[1]).map(([tool]) => tool).slice(0, 8);
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-name">
