@@ -1,0 +1,84 @@
+---
+import { skills } from '../data/profile';
+
+const skillCategories = [
+  { title: 'Languages', items: skills.languages },
+  { title: 'Frontend', items: skills.frontend },
+  { title: 'Backend', items: skills.backend },
+  { title: 'Database', items: skills.database },
+  { title: 'Tools & Platforms', items: skills.tools },
+  { title: 'Security', items: skills.security },
+];
+---
+
+<section class="section" id="skills" aria-labelledby="skills-name">
+  <h2 class="section-name" id="skills-name">Skills & Expertise</h2>
+
+  <ul class="grid">
+    {
+      skillCategories.map((cat) => (
+        <li class="skill-card card" data-tilt>
+          <h3>{cat.title}</h3>
+          <ul class="chips">
+            {cat.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  @media (min-width: 44rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 66rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .skill-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  h3 {
+    font-size: var(--step-1);
+    font-weight: 650;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .chips li {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--glass-line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    transition: border-color 200ms, color 200ms;
+  }
+
+  .chips li:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>

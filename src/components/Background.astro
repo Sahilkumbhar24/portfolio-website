@@ -1,0 +1,145 @@
+---
+import { experience, certifications, person } from '../data/profile';
+---
+
+<section class="section" id="background" aria-labelledby="background-name">
+  <h2 class="section-name" id="background-name">Background</h2>
+
+  <div class="layout">
+    <div class="block card experience">
+      <h3 class="sub">Education</h3>
+      <ol class="roles">
+        {
+          experience.map((role) => (
+            <li class="role">
+              <span class="period">
+                {role.start} to {role.end}
+              </span>
+              <span class="what">
+                <strong class="title">{role.title}</strong>
+                <span class="org">
+                  {role.place ? `${role.org}, ${role.place}` : role.org}
+                  <span class="kind">{role.kind}</span>
+                </span>
+                {role.note && <span class="note">{role.note}</span>}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="block card">
+      <h3 class="sub">Certifications</h3>
+      <ul class="list">
+        {
+          certifications.map((cert) => (
+            <li>
+              <strong>{cert.title}</strong>
+              {cert.by && <span class="byline">{cert.by}</span>}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="languages">I speak {person.languages.slice(0, -1).join(', ')} and {person.languages.at(-1)}.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  @media (min-width: 60rem) {
+    .layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .experience {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .block {
+    padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    border-radius: var(--radius-sm);
+  }
+
+  .sub {
+    margin-bottom: 1rem;
+    font-size: var(--step-2);
+    font-weight: 750;
+  }
+
+  .roles > li,
+  .list > li {
+    border-top: 1px solid var(--line);
+  }
+
+  .role {
+    display: grid;
+    gap: 0.15rem 2rem;
+    padding-block: 1.1rem;
+  }
+
+  @media (min-width: 44rem) {
+    .role {
+      grid-template-columns: 10rem minmax(0, 1fr);
+    }
+  }
+
+  .period {
+    padding-top: 0.15rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .what {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .title {
+    font-weight: 700;
+  }
+
+  .org,
+  .note {
+    color: var(--muted);
+  }
+
+  .kind {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    vertical-align: 0.1em;
+  }
+
+  .list > li {
+    display: grid;
+    gap: 0.2rem;
+    padding-block: 0.95rem;
+  }
+
+  .list strong {
+    font-weight: 650;
+  }
+
+  .byline {
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .languages {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+  }
+</style>

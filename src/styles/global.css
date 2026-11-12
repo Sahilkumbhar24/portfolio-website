@@ -1,0 +1,582 @@
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource-variable/atkinson-hyperlegible-next';
+@import '@fontsource-variable/atkinson-hyperlegible-mono';
+
+/* Constellation. A deep field with two soft auroras, and content on glass above it. Display type is
+   Instrument Serif, body text Atkinson Hyperlegible, data and labels Atkinson Mono.
+   Deep field (dark, the default): fg 17.5:1, muted 8.4:1, signal lime 17.2:1, field 4.3:1.
+   Daylight: fg 17.9:1, muted 7.6:1, indigo 6.5:1, field 3.6:1. Accent 2 is for graphics only.
+   --glass and --glass-line make the panels; --depth is their shadow; --glow the light that
+   follows the pointer. */
+:root {
+  --bg: #05060b;
+  --surface: #0c0e17;
+  --surface-2: #151826;
+  --line: rgb(255 255 255 / 0.12);
+  --field: #6d7290;
+  --fg: #eeeef6;
+  --muted: #a2a6c0;
+  --accent: #c8ff4d;
+  --accent-2: #8b7bff;
+  --on-accent: #0b0d05;
+  --glass: rgb(255 255 255 / 0.035);
+  --glass-line: rgb(255 255 255 / 0.1);
+  --depth: rgb(0 0 0 / 0.55);
+  --glow: rgb(200 255 77 / 0.07);
+  --haze: rgb(0 0 0 / 0.6);
+  --aurora-1: rgb(139 123 255 / 0.2);
+  --aurora-2: rgb(200 255 77 / 0.07);
+
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-sans: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Major-third scale from an 18px body; the display sizes jump harder. */
+  --step--1: 0.9rem;
+  --step-0: 1.125rem;
+  --step-1: 1.406rem;
+  --step-2: 1.758rem;
+  --step-3: clamp(2.2rem, 1.6rem + 2.4vw, 3.5rem);
+  --step-4: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --step-5: clamp(4.25rem, 2rem + 9vw, 10.5rem);
+
+  --page: 80rem;
+  --measure: 42rem;
+  --gutter: clamp(1.125rem, 0.5rem + 2.5vw, 2.5rem);
+  --radius: 1.25rem;
+  --radius-sm: 0.6rem;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f4f4f8;
+  --surface: #ffffff;
+  --surface-2: #ebebf3;
+  --line: rgb(10 12 30 / 0.12);
+  --field: #7a7e96;
+  --fg: #0a0b14;
+  --muted: #4a4d63;
+  --accent: #4a35e8;
+  --accent-2: #0e9f8f;
+  --on-accent: #ffffff;
+  --glass: rgb(255 255 255 / 0.62);
+  --glass-line: rgb(10 12 30 / 0.1);
+  --depth: rgb(30 30 80 / 0.14);
+  --glow: rgb(74 53 232 / 0.07);
+  --haze: rgb(30 30 80 / 0.2);
+  --aurora-1: rgb(74 53 232 / 0.12);
+  --aurora-2: rgb(14 159 143 / 0.08);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Anchors and focused elements stop below the sticky header. Nothing scrolls sideways: the hero's
+   ring may spill into the page margin, and the window edge clips it. */
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  /* Instrument Serif has no bold; never let the browser fake one. */
+  font-synthesis-weight: none;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Two soft auroras fixed behind everything. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 78% -12%, var(--aurora-1), transparent 62%),
+    radial-gradient(48rem 34rem at -8% 38%, var(--aurora-2), transparent 60%);
+}
+
+body > :not(.skip-link, script, .intro-curtain, .cursor-ring) {
+  position: relative;
+  z-index: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* Instrument Serif has one weight; size and italics carry the hierarchy. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+code,
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+.page {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Buttons are pills of glass; the one primary per view is lit in the signal colour. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.1rem;
+  padding: 0.55rem 1.4rem;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--fg);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+.button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0.75rem 2.25rem -0.75rem var(--accent);
+}
+
+.button.primary:hover {
+  color: var(--on-accent);
+  box-shadow: 0 1rem 3rem -0.5rem var(--accent);
+}
+
+.button:active {
+  scale: 0.96;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button {
+    transition:
+      border-color 200ms,
+      box-shadow 300ms var(--ease-out),
+      scale 200ms var(--ease-out),
+      translate 300ms var(--ease-out);
+  }
+}
+
+/* A section opens with its name set large in the serif, numbered in mono above it. */
+.section {
+  padding-block: clamp(4rem, 3rem + 5vw, 8.5rem);
+}
+
+main {
+  counter-reset: section;
+}
+
+.section-name {
+  counter-increment: section;
+  margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  color: var(--fg);
+  font-size: var(--step-4);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.section-name::before {
+  content: counter(section, decimal-leading-zero) ' /';
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+}
+
+/* A card is a pane of glass over the field. Behind it is only the soft aurora, so it needs no
+   backdrop blur, which would cost a repaint of every card on every scroll frame. */
+.card {
+  border: 1px solid var(--glass-line);
+  border-radius: var(--radius);
+  /* A pool of light follows the pointer across every card at once (scripts/pointer.ts). */
+  background:
+    radial-gradient(30rem circle at var(--mx, -50rem) var(--my, -50rem), var(--glow), transparent 45%),
+    var(--glass);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 2rem 4rem -2rem var(--depth);
+}
+
+/* A card that tilts toward the pointer (see scripts/tilt.ts), with a sheen that follows it. */
+[data-tilt] {
+  position: relative;
+  transform: perspective(60rem) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+}
+
+[data-tilt]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Under the text: the card's transform makes it a stacking context, so -1 still paints above
+     the card's own background. */
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), var(--glow), transparent 60%);
+}
+
+[data-tilt]:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Inside a lifted card the heading floats highest, then the links. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-tilt] {
+    transform-style: preserve-3d;
+  }
+
+  [data-tilt]:hover > :first-child {
+    transform: translateZ(2.5rem);
+  }
+
+  [data-tilt]:hover > :last-child {
+    transform: translateZ(1.2rem);
+  }
+
+  [data-tilt] > :first-child,
+  [data-tilt] > :last-child {
+    transition: transform 350ms var(--ease-out);
+  }
+}
+
+[data-tilt]:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-tilt] {
+    transition:
+      transform 180ms var(--ease-out),
+      border-color 300ms;
+  }
+
+  [data-tilt]::after {
+    transition: opacity 250ms;
+  }
+}
+
+/* Sections fade and rise in as they scroll in. Opacity and transform only, which the compositor
+   animates without repainting; a blur here would repaint each section on every scroll frame. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section > * {
+      animation: focus linear both;
+    }
+
+    /* A separate rule: the minifier would otherwise fold the timeline into the animation
+       shorthand, which browsers reject. */
+    .page .section > * {
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+@keyframes focus {
+  from {
+    opacity: 0;
+    transform: translateY(3rem) scale(0.97);
+  }
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Disclosure: a native <details> whose summary is the line people scan and whose content is the
+   detail they ask for. Closed content stays in the page, so find-in-page opens it. */
+.disclosure > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* A plus that becomes a minus: the vertical stroke collapses when open. */
+.disclosure > summary::after {
+  content: '';
+  flex: none;
+  align-self: center;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-left: auto;
+  color: var(--muted);
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+}
+
+.disclosure[open] > summary::after {
+  background-size:
+    100% 2px,
+    2px 0;
+}
+
+.disclosure > summary:hover::after {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .disclosure > summary::after {
+    transition: background-size 250ms var(--ease-out);
+  }
+}
+
+/* Opening animates the height where the browser can (Chromium 131+); elsewhere it opens at once. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .disclosure::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      /* Room for focus rings at the panel's edges while it animates. */
+      overflow-clip-margin: 0.5rem;
+      transition:
+        block-size 320ms var(--ease-out),
+        content-visibility 320ms allow-discrete;
+    }
+
+    .disclosure[open]::details-content {
+      block-size: auto;
+    }
+  }
+}
+
+/* Switching editions: a circle of the new page opens from the switch (scripts/theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* The ring that sits on the pointer (scripts/pointer.ts). Difference blending keeps it visible on
+   both editions and over photos. */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: translate;
+  transition:
+    scale 300ms var(--ease-out),
+    opacity 300ms,
+    background-color 300ms;
+}
+
+.cursor-ring.is-over {
+  scale: 1.8;
+  background: #fff;
+}
+
+.cursor-ring.is-down {
+  scale: 0.8;
+}
+
+.cursor-ring.is-away {
+  opacity: 0;
+}
+
+/* The intro, once per session: the monogram and a count to 100 in the dark, then it parts like
+   a shutter. It exists only when the head script adds .intro, so without JavaScript
+   or with reduced motion there is nothing to wait for. */
+.intro-curtain {
+  display: none;
+}
+
+@property --count {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.intro body > .intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  background: var(--bg);
+  color: var(--fg);
+  pointer-events: none;
+  animation: lift 800ms 1000ms cubic-bezier(0.7, 0, 0.2, 1) forwards;
+}
+
+.intro-mark {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 3rem + 6vw, 9rem);
+  font-style: italic;
+  line-height: 1;
+  text-shadow: 0 0 0.5em color-mix(in srgb, var(--accent) 50%, transparent);
+  animation: rise 700ms var(--ease-out) both;
+}
+
+.intro-count {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.2em;
+  counter-reset: count var(--count);
+  animation: count 950ms cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+
+.intro-count::after {
+  content: counter(count) '%';
+}
+
+@keyframes count {
+  to {
+    --count: 100;
+  }
+}
+
+@keyframes lift {
+  to {
+    clip-path: inset(50% 0 50% 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}

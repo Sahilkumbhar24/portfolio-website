@@ -1,0 +1,31 @@
+---
+import { person } from '../data/profile';
+
+const built = new Date();
+const updated = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(built);
+---
+
+<footer class="site-footer">
+  <div class="page row">
+    <p>© {built.getFullYear()} {person.name}</p>
+    <p class="muted">
+      Updated {updated}.
+    </p>
+    <p><a href={person.links.github}>GitHub</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 2rem 2.5rem;
+  }
+</style>

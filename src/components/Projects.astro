@@ -1,0 +1,237 @@
+---
+import { person, projects, moreProjects } from '../data/profile';
+
+const count = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'][moreProjects.length] ?? moreProjects.length;
+---
+
+<section class="section" id="projects" aria-labelledby="projects-name">
+  <h2 class="section-name" id="projects-name">Things I've built</h2>
+
+  <ul class="grid">
+    {
+      projects.map((project) => (
+        <li class="project card" data-tilt>
+          <div class="head">
+            <h3>
+              <a href={project.repo}>{project.name}</a>
+            </h3>
+            {project.stars ? (
+              <span class="stars" aria-label={`${project.stars} GitHub stars`}>
+                ★ {project.stars}
+              </span>
+            ) : null}
+          </div>
+          <p class="summary">{project.summary}</p>
+          <ul class="chips" aria-label="Built with">
+            {project.stack.map((tool) => <li>{tool}</li>)}
+          </ul>
+          <details class="disclosure how">
+            <summary>
+              How it works<span class="visually-hidden">: {project.name}</span>
+            </summary>
+            <div class="how-body">
+              <p>{project.body}</p>
+            </div>
+          </details>
+          <p class="links">
+            <a href={project.repo}>
+              Code<span class="visually-hidden"> for {project.name}</span>
+            </a>
+            {project.links?.map((link) => (
+              <a href={link.url}>
+                {link.label}
+                <span class="visually-hidden"> for {project.name}</span>
+              </a>
+            ))}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <details class="disclosure earlier card">
+    <summary>{count} earlier projects</summary>
+    <ul class="more">
+      {
+        moreProjects.map((project) => (
+          <li>
+            <a href={project.url}>{project.name}</a>
+            <span class="muted">{project.body}</span>
+            {project.demo && (
+              <a class="demo" href={project.demo}>
+                Live demo<span class="visually-hidden"> for {project.name}</span>
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="all">
+      <a href={`${person.links.github}?tab=repositories`}>Every repository on GitHub</a>
+    </p>
+  </details>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  @media (min-width: 44rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 66rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .project:is(:nth-child(1), :nth-child(4), :nth-child(6)) {
+      grid-column: span 2;
+    }
+
+    .project:nth-child(1) h3 {
+      font-size: var(--step-3);
+    }
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .chips li {
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--glass-line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    min-height: 15rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  h3 {
+    font-size: var(--step-2);
+    font-weight: 650;
+  }
+
+  h3 a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--accent);
+  }
+
+  .stars {
+    flex: none;
+    color: var(--accent);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .summary {
+    margin-top: 0.6rem;
+    color: var(--muted);
+  }
+
+  .how {
+    margin-top: 1rem;
+  }
+
+  .how > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 24px;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .how > summary::after {
+    margin-left: 0;
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  .how > summary:hover {
+    color: var(--fg);
+  }
+
+  .how-body {
+    padding-top: 0.75rem;
+    font-size: var(--step--1);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-size: var(--step--1);
+    font-weight: 650;
+  }
+
+  .earlier {
+    margin-top: 1.25rem;
+    padding: 0.5rem 1.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .earlier > summary {
+    padding-block: 1rem;
+    font-weight: 700;
+  }
+
+  .earlier > summary:hover {
+    color: var(--accent);
+  }
+
+  .more {
+    border-top: 1px solid var(--line);
+  }
+
+  .more li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 1rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .more li > a:first-child {
+    min-width: 11rem;
+    font-weight: 650;
+  }
+
+  .more .muted {
+    flex: 1 1 18rem;
+  }
+
+  .all {
+    padding-block: 1.25rem 1rem;
+  }
+</style>

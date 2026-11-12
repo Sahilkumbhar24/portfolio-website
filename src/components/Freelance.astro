@@ -1,0 +1,97 @@
+---
+import { person, achievements } from '../data/profile';
+---
+
+<section class="section" id="achievements" aria-labelledby="achievements-name">
+  <h2 class="section-name" id="achievements-name">Achievements</h2>
+  <p class="statement">Beyond code, I share knowledge and keep sharpening my skills.</p>
+
+  <ul class="offers">
+    {
+      achievements.map((item) => (
+        <li class="card" data-tilt>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+          {item.url && (
+            <p class="proof">
+              <a href={item.url}>Check it out →</a>
+            </p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="next">
+    <p>
+      I'm based in {person.location} ({person.timezone}). I'm looking for full-time SDE roles where I can build scalable, production-grade software.
+    </p>
+    <a class="button primary" href="#contact" data-magnet>Get in touch</a>
+  </div>
+</section>
+
+<style>
+  .statement {
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    background: linear-gradient(100deg, var(--fg) 30%, var(--accent));
+    background-clip: text;
+    color: transparent;
+  }
+
+  .offers {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  @media (min-width: 56rem) {
+    .offers {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .offers li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .offers h3 {
+    font-size: var(--step-1);
+    font-weight: 750;
+  }
+
+  .offers li > p:not(.proof) {
+    color: var(--muted);
+    font-size: var(--step--1);
+    line-height: 1.6;
+  }
+
+  .proof {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+
+  .next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .next p {
+    flex: 1 1 22rem;
+    max-width: var(--measure);
+    color: var(--muted);
+  }
+</style>
